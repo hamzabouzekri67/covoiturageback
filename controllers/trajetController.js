@@ -1,6 +1,10 @@
 const Trajet = require("../models/Trajet");
 const Reservation = require("../models/Reservation");
 const AppError = require("../utils/appError");
+const {mongoose} = require('mongoose');
+
+//const mongoose = require('mongoose');
+
 
 // Middleware de vérification de propriété
 exports.verifyOwner = async (req, res, next) => {
@@ -93,12 +97,32 @@ exports.getAllTrajets = async (req, res, next) => {
 // Récupérer les détails d'un trajet
 exports.getTrajetDetails = async (req, res, next) => {
   try {
-   
-    
-    const trajet = await Trajet.find({
-    conducteur:req.params.id
-    });   
+
+    const trajet = await Trajet.findById(req.params.id);   
        console.log(trajet);
+  
+    if (!trajet) {
+      return next(new AppError("Aucun trajet trouvé avec cet ID", 404));
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: trajet, 
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getTrajetCondDetails = async (req, res, next) => {
+  try {
+
+    const trajet = await Trajet.find({
+      conducteur:req.params.id
+    });   
+
+    console.log(trajet);
+    
   
     if (!trajet) {
       return next(new AppError("Aucun trajet trouvé avec cet ID", 404));

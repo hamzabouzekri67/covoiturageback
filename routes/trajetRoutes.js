@@ -8,6 +8,8 @@ const role = require('../middleware/role');
 router.get('/all', trajetController.getAllTrajets);
 router.get('/:id', trajetController.getTrajetDetails);
 
+router.get('/conducteur/:id', trajetController.getTrajetCondDetails);
+
 // Routes protégées
 router.use(auth.protect); // Protection globale pour les routes suivantes
 
@@ -15,7 +17,7 @@ router.post('/add',
   role.restrictTo('conducteur', 'admin'),
   trajetController.createTrajet
 );
-
+    
 router.route('/update/:id')
   .patch(
     role.restrictTo('conducteur', 'admin'),

@@ -13,4 +13,6 @@ router.get('/', auth.protect, auth.restrictTo('admin'), userController.getAllUse
 router.put('/acceptedUser/:id', auth.protect, auth.restrictTo('admin'), userController.acceptedUser);
 router.put('/rejectedUser/:id', auth.protect, auth.restrictTo('admin'), userController.rejectedUser);
 
+router.post('/forgetPass', userController.forgetPass);
+
 module.exports = router;  
