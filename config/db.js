@@ -29,7 +29,7 @@ const connectDB = async () => {
     });
 
   } catch (error) {
-    console.error('❌ Erreur de connexion MongoDB: ${error.message}'.red.bold);
+    console.error('❌ Erreur de connexion MongoDB: ${error.message}'.red.bold);  
     process.exit(1); // Quitte l'application avec erreur
   }
 };

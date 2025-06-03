@@ -3,7 +3,8 @@ const AppError = require('../utils/appError');
 var https = require('follow-redirects').https;
 var fs = require('fs');
 const otpgen = require("otp-generator");
-
+const bcrypt = require('bcryptjs');
+const { log } = require('console');
 
 exports.getProfile = async (req, res, next) => {
   try {
@@ -151,11 +152,14 @@ exports.forgetPass = async (req, res, next) => {
   try {
    const user = await User.findOne({
     telephone:`216${req.body.telephone}`,
-    role:{$ne:"admin"}
+    role:{$ne:"admin"},
+    status:"accepted"
    });
 
    if (user) { 
    var otp =  createOtp(res,user)
+   console.log(otp);
+   
      res.status(200).json({
       status: 'success',
       data: {
@@ -169,9 +173,29 @@ exports.forgetPass = async (req, res, next) => {
       status: 'failed',
       data: ""
     });
-   }
+   }   
+  } catch (err) { 
+    next(err);
+  }
+}; 
 
-  // next("no users")
+exports.UpdatePass = async (req, res, next) => {
+  try {
+
+    
+
+   const newäss = await User.findById({
+    _id:req.params.id
+   });
+   if (newäss) {
+    newäss.password = req.body.newPassword
+    newäss.save(),
+    res.status(200).json({
+      status: 'success',
+      data:""
+    });
+   }
+  
    
   } catch (err) { 
     next(err);

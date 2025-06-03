@@ -94,7 +94,6 @@ exports.login = async (req, res, next) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({email:email , status : {$ne:"deleted"}  }).select('+password');
-    console.log(user);
     
     if (!user || !(await user.comparePassword(password, user.password))) {
       return next(new AppError('Identifiants invalides', 401));
@@ -161,13 +160,10 @@ exports.resetPassword = async (req, res, next) => {
       return next(new AppError('Token invalide ou expiré', 400));
     }
 
-    // 2) Met à jour le mot de passe
     user.password = newPassword;
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
     await user.save();
-
-    // 3) Envoie la réponse
     sendUserResponse(user, 200, res);
 
   } catch (err) {
