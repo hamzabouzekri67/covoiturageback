@@ -73,10 +73,11 @@ const server = app.listen(PORT, () => {
 process.on("unhandledRejection", (err) => {
   console.error("🔴 Erreur non gérée:", err.name, err.message);
   server.close(() => process.exit(1));
-});
-
-// Signal d'arrêt propre
+}); 
+ 
+// Signal d'arrêt propre 
 process.on("SIGTERM", () => {
-  console.log("👋 SIGTERM reçu. Arrêt propre du serveur");
+  console.log("👋 SIGTERM reçu. Arrêt propre du serveur"); 
   server.close(() => console.log("🛑 Process terminé"));
 });
+ 

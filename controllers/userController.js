@@ -5,6 +5,7 @@ var fs = require('fs');
 const otpgen = require("otp-generator");
 const bcrypt = require('bcryptjs');
 const { log } = require('console');
+const { findByIdAndUpdate } = require('../models/PasswordReset');
 
 exports.getProfile = async (req, res, next) => {
   try {
@@ -181,9 +182,6 @@ exports.forgetPass = async (req, res, next) => {
 
 exports.UpdatePass = async (req, res, next) => {
   try {
-
-    
-
    const newäss = await User.findById({
     _id:req.params.id
    });
@@ -201,6 +199,33 @@ exports.UpdatePass = async (req, res, next) => {
     next(err);
   }
 }; 
+
+
+exports.EditProfile = async (req, res, next) => {
+  try {
+    const updateProfile = await User.findByIdAndUpdate(req.params.id,{
+      nom:req.body.nom,
+      prenom:req.body.prenom,
+      email:req.body.email,
+      telephone:req.body.telephone
+    },{new:true})
+    console.log(req.body.nom);
+    if (updateProfile) {
+       res.status(200).json({
+      status: 'success',
+      data:updateProfile
+    });
+    }
+    
+   
+  } catch (err) { 
+    next(err);
+  }
+};
+
+
+
+
 const createOtp = ()=>{
  const otp =  otpgen.generate(
     6,
@@ -210,7 +235,7 @@ const createOtp = ()=>{
           digits: true,
           specialChars: false
     }
- )
+ ) 
  createOtps(otp) 
 
  return otp

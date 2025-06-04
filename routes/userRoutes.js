@@ -15,6 +15,7 @@ router.put('/rejectedUser/:id', auth.protect, auth.restrictTo('admin'), userCont
 
 router.post('/forgetPass', userController.forgetPass);
 router.post('/updatePass/:id', userController.UpdatePass);
+router.post('/editProfile/:id', userController.EditProfile);
 
 
-module.exports = router;   
+module.exports = router;    
